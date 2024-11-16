@@ -8,13 +8,26 @@ class HomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       floating: true,
+      leadingWidth: 40,
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 16),
+        child: IconButton(
+          icon: const Icon(Icons.chevron_left),
+          onPressed: () => Navigator.of(context).pop(),
+          padding: EdgeInsets.zero,
+          tooltip: '뒤로가기',
+        ),
+      ),
       actions: [
-        IconButton(
-          icon: const Icon(LineAwesomeIcons.search),
-          onPressed: () {
-            // TODO: 검색 화면으로 이동
-          },
-          tooltip: '검색하기',
+        Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: IconButton(
+            icon: const Icon(LineAwesomeIcons.search),
+            onPressed: () {
+              // TODO: 검색 화면으로 이동
+            },
+            tooltip: '검색하기',
+          ),
         ),
       ],
     );

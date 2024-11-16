@@ -15,24 +15,30 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            const HomeHeader(),
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  const CategorySection(),
-                  Container(
-                    color: AppColors.bgBlue.withOpacity(0.3),
-                    child: const PopularSection(),
-                  ),
-                  Container(
-                    color: AppColors.bgPink.withOpacity(0.3),
-                    child: const StorySection(),
-                  ),
-                  Container(
-                    color: AppColors.bgYellow.withOpacity(0.3),
-                    child: const RecommendedSection(),
-                  ),
-                ],
+            const SliverPadding(
+              padding: EdgeInsets.only(top: 16),
+              sliver: HomeHeader(),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              sliver: SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    const CategorySection(),
+                    Container(
+                      color: AppColors.bgBlue.withOpacity(0.3),
+                      child: const PopularSection(),
+                    ),
+                    Container(
+                      color: AppColors.bgPink.withOpacity(0.3),
+                      child: const StorySection(),
+                    ),
+                    Container(
+                      color: AppColors.bgYellow.withOpacity(0.3),
+                      child: const RecommendedSection(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
