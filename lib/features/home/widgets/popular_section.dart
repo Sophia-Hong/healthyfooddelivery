@@ -4,6 +4,7 @@ import '../models/popular_item.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../../features/shared/utils/format_utils.dart';
 
 class PopularSection extends StatelessWidget {
   const PopularSection({super.key});
@@ -60,21 +61,26 @@ class _PopularItemCard extends StatelessWidget {
         );
       },
       child: Container(
-        width: 200,
+        width: 180,
         margin: const EdgeInsets.only(right: 16),
         child: Card(
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           clipBehavior: Clip.antiAlias,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               // 이미지
               AspectRatio(
                 aspectRatio: 1.5,
                 child: CachedImage(
                   imageUrl: item.imageUrl,
-                  width: 120,
+                  width: 180,
                   height: 120,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                 ),
               ),
               Padding(
@@ -83,19 +89,29 @@ class _PopularItemCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // 제목
-                    Text(
-                      item.title,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    SizedBox(
+                      height: 20,
+                      child: Text(
+                        item.title,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     // 부제목
-                    Text(
-                      item.subtitle,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                    SizedBox(
+                      height: 32,
+                      child: Text(
+                        item.subtitle,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     // 평점과 배달시간
@@ -127,10 +143,10 @@ class _PopularItemCard extends StatelessWidget {
                     const SizedBox(height: 8),
                     // 가격
                     Text(
-                      '${item.price.toString()}원',
+                      '${formatPrice(item.price)}원',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
