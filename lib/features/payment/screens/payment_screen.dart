@@ -182,7 +182,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      '결제 수단',
+                      '결제 ��단',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -246,17 +246,79 @@ class _PaymentScreenState extends State<PaymentScreen> {
           padding: const EdgeInsets.all(16),
           child: ElevatedButton(
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                // 결제 수단에 따른 처리 로직 추가
-                String paymentMethodName = _paymentMethods
-                    .firstWhere((method) => method['id'] == _selectedPaymentMethod)['name'];
-                    
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('$paymentMethodName(으)로 결제가 완료되었습니다'),
-                  ),
+              if (_formKey.currentState?.validate() ?? false) {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: primaryGreen.withOpacity(0.1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.check_rounded,
+                                color: primaryGreen,
+                                size: 32,
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            const Text(
+                              '건강한 음식 주문해 주셔서\n감사합니다!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                height: 1.4,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              '얼른 가져다 드릴께요!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            SizedBox(
+                              width: double.infinity,
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                                },
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                ),
+                                child: const Text(
+                                  '확인',
+                                  style: TextStyle(
+                                    color: Color(0xFF1B5E20),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 );
-                Navigator.popUntil(context, ModalRoute.withName('/'));
               }
             },
             style: ElevatedButton.styleFrom(
