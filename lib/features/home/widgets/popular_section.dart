@@ -18,7 +18,7 @@ class PopularSection extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              '인기 메뉴',
+              '사랑받은 메뉴',
               style: Theme.of(context).textTheme.headlineSmall,
               semanticsLabel: '인기 메뉴 섹션',
             ),
@@ -51,83 +51,92 @@ class _PopularItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 200,
-      margin: const EdgeInsets.only(right: 16),
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 이미지
-            AspectRatio(
-              aspectRatio: 1.5,
-              child: CachedImage(
-                imageUrl: item.imageUrl,
-                width: 120,
-                height: 120,
-                borderRadius: BorderRadius.circular(8),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          '/menu_detail',
+          arguments: item,
+        );
+      },
+      child: Container(
+        width: 200,
+        margin: const EdgeInsets.only(right: 16),
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 이미지
+              AspectRatio(
+                aspectRatio: 1.5,
+                child: CachedImage(
+                  imageUrl: item.imageUrl,
+                  width: 120,
+                  height: 120,
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 제목
-                  Text(
-                    item.title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  // 부제목
-                  Text(
-                    item.subtitle,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 제목
+                    Text(
+                      item.title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    // 부제목
+                    Text(
+                      item.subtitle,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                    ),
+                    const SizedBox(height: 8),
+                    // 평점과 배달시간
+                    Row(
+                      children: [
+                        Icon(
+                          LineAwesomeIcons.star_1,
+                          size: 16,
+                          color: AppColors.primaryGold,
                         ),
-                  ),
-                  const SizedBox(height: 8),
-                  // 평점과 배달시간
-                  Row(
-                    children: [
-                      Icon(
-                        LineAwesomeIcons.star_1,
-                        size: 16,
-                        color: AppColors.primaryGold,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        item.rating.toString(),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      const SizedBox(width: 8),
-                      Icon(
-                        LineAwesomeIcons.clock,
-                        size: 16,
-                        color: AppColors.textTertiary,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${item.deliveryTime}분',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  // 가격
-                  Text(
-                    '${item.price.toString()}원',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(width: 4),
+                        Text(
+                          item.rating.toString(),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
-                  ),
-                ],
+                        const SizedBox(width: 8),
+                        Icon(
+                          LineAwesomeIcons.clock,
+                          size: 16,
+                          color: AppColors.textTertiary,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${item.deliveryTime}분',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    // 가격
+                    Text(
+                      '${item.price.toString()}원',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

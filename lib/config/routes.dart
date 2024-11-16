@@ -6,6 +6,8 @@ import '../features/cart/screens/cart_screen.dart';
 import '../features/payment/screens/payment_screen.dart';
 import '../features/order/screens/order_status_screen.dart';
 import '../core/screens/main_screen.dart';
+import '../features/menu/screens/menu_detail_screen.dart';
+import '../features/home/models/popular_item.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -14,8 +16,9 @@ class AppRoutes {
   static const String cart = '/cart';
   static const String payment = '/payment';
   static const String orderStatus = '/order-status';
+  static const String menuDetail = '/menu_detail';
 
-  static Map<String, WidgetBuilder> getRoutes() {
+  static Map<String, Widget Function(BuildContext)> getRoutes() {
     return {
       home: (context) => const HomeScreen(),
       search: (context) => const SearchScreen(),
@@ -30,7 +33,11 @@ class AppRoutes {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => const MainScreen());
-      // 기존 라우트들...
+      case menuDetail:
+        final item = settings.arguments as PopularItem;
+        return MaterialPageRoute(
+          builder: (_) => MenuDetailScreen(item: item),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(

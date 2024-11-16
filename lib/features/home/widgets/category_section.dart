@@ -15,7 +15,7 @@ class CategorySection extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: Text(
-              '메인 카테고리',
+              '이런 메뉴 어때요',
               style: Theme.of(context).textTheme.headlineSmall,
               semanticsLabel: '메인 카테고리 섹션',
             ),

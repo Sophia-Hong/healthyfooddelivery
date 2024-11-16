@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthigo/config/theme.dart';
-import 'package:healthigo/features/home/screens/home_screen.dart';
+import 'config/routes.dart';
 
 void main() {
   runApp(const HealthigoApp());
@@ -14,8 +14,9 @@ class HealthigoApp extends StatelessWidget {
     return MaterialApp(
       title: 'Healthigo',
       theme: AppTheme.lightTheme,
-      home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
+      onGenerateRoute: AppRoutes.generateRoute,
+      routes: AppRoutes.getRoutes(),
     );
   }
 }
