@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../home/models/popular_item.dart';
+import '../../shared/utils/format_utils.dart';
 
 class MenuDetailScreen extends StatefulWidget {
   final PopularItem item;
@@ -152,7 +153,7 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
                       ),
                       const Spacer(),
                       Text(
-                        '${widget.item.price}원',
+                        formatPrice(widget.item.price),
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -196,7 +197,7 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        '${widget.item.price * _quantity}원',
+                        formatPrice(widget.item.price * _quantity),
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -264,7 +265,7 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
                                       ),
                                       const Spacer(),
                                       Text(
-                                        '${widget.item.price * _quantity}원',
+                                        formatPrice(widget.item.price * _quantity),
                                         style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,

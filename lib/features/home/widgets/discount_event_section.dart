@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/discount_event.dart';
+import '../../../features/shared/utils/format_utils.dart';
 
 class DiscountEventSection extends StatelessWidget {
   final DiscountEvent event;
@@ -99,7 +100,7 @@ class DiscountEventSection extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      '${event.originalPrice.toInt()}원',
+                      formatPrice(event.originalPrice),
                       style: const TextStyle(
                         color: Colors.white70,
                         decoration: TextDecoration.lineThrough,
@@ -108,7 +109,7 @@ class DiscountEventSection extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      '${event.discountedPrice.toInt()}원',
+                      formatPrice(event.discountedPrice),
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

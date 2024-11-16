@@ -145,7 +145,7 @@ class _PopularItemCard extends StatelessWidget {
                     const SizedBox(height: 8),
                     // 가격
                     Text(
-                      '${formatPrice(item.price)}원',
+                      formatPrice(item.price),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),

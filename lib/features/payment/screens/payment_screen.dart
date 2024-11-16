@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../home/models/popular_item.dart';
+import '../../../features/shared/utils/format_utils.dart';
 
 class PaymentScreen extends StatefulWidget {
   final PopularItem item;
@@ -97,7 +98,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '${widget.item.price}원 · ${widget.quantity}개',
+                            '${formatPrice(widget.item.price)} · ${widget.quantity}개',
                             style: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 15,
@@ -182,7 +183,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      '결제 ��단',
+                      '결제 수단',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -355,7 +356,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ),
         ),
         Text(
-          '${price}원',
+          formatPrice(price),
           style: TextStyle(
             fontSize: isTotal ? 18 : 15,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
