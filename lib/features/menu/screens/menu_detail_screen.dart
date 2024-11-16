@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../features/shared/constants/app_colors.dart';
 import '../../home/models/popular_item.dart';
+import '../../../features/shared/utils/format_utils.dart';
 
 class MenuDetailScreen extends StatefulWidget {
   final PopularItem item;
@@ -65,7 +66,7 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
                 
                 // 총 금액
                 Text(
-                  '총 ${widget.item.price * quantity}원',
+                  '총 ${formatPrice(widget.item.price * quantity)}원',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
@@ -104,7 +105,7 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: 결제 페이지로 이동
+                          // TODO: 결제 페이지로 동
                           Navigator.of(context).pop();
                         },
                         style: ElevatedButton.styleFrom(
@@ -158,10 +159,10 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
               ),
             ),
             
-            // 음식 이미지 (직사각형)
+            // 음식 이미지 (높이 줄임)
             Container(
               width: screenWidth,
-              height: screenWidth * 0.75,
+              height: screenWidth * 0.6,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(widget.item.imageUrl),
@@ -270,7 +271,7 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
                                 ),
                               ),
                               Text(
-                                '${widget.item.price}원',
+                                '${formatPrice(widget.item.price)}원',
                                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -308,57 +309,71 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
                         ],
                       ),
                       const SizedBox(height: 24),
-                      
-                      // 총 금액
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '총 금액',
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                          Text(
-                            '${widget.item.price * quantity}원',
-                            style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF4CAF50),
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                 ),
               ),
             ),
             
-            // 장바구니 담기 버튼
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _showCartDialog,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: const Color(0xFF4CAF50),
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    '장바구니 담기',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
+            // 하단 총 금액과 장바구니 담기 버튼
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.grey.shade200,
+                    width: 1,
                   ),
                 ),
+              ),
+              child: Row(
+                children: [
+                  // 총 금액
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '총 금액',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                      Text(
+                        '${formatPrice(widget.item.price * quantity)}원',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 20),
+                  // 장바구니 담기 버튼
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _showCartDialog,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: const Color(0xFF4CAF50),
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        '장바구니 담기',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
