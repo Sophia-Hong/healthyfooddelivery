@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import '../models/category.dart';
 import '../../../features/shared/constants/app_colors.dart';
 
-class CategorySection extends StatelessWidget {
+class CategorySection extends StatefulWidget {
   const CategorySection({super.key});
+
+  @override
+  State<CategorySection> createState() => _CategorySectionState();
+}
+
+class _CategorySectionState extends State<CategorySection> {
+  String? _selectedId;
 
   @override
   Widget build(BuildContext context) {
@@ -19,43 +26,56 @@ class CategorySection extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(
-          height: 40,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: Category.categories.length,
-            itemBuilder: (context, index) {
-              final category = Category.categories[index];
-              return Container(
-                margin: const EdgeInsets.only(right: 8),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: Category.categories.map((category) {
+              final isSelected = _selectedId == category.id;
+              return Padding(
+                padding: const EdgeInsets.only(
+                  left: 8,
+                  right: 4,
+                ),
                 child: Material(
-                  color: AppColors.categoryColors[category.id]?.withOpacity(0.2),
+                  color: isSelected 
+                      ? AppColors.categoryColors[category.id] 
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(20),
+                  elevation: 1,
                   child: InkWell(
                     onTap: () {
-                      // TODO: 카테고리 탭 처리
+                      setState(() {
+                        _selectedId = isSelected ? null : category.id;
+                      });
                     },
                     borderRadius: BorderRadius.circular(20),
-                    child: Padding(
+                    child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 8,
+                        vertical: 10,
                       ),
-                      child: Center(
-                        child: Text(
-                          category.name,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.categoryColors[category.id],
-                            fontWeight: FontWeight.w600,
-                          ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: (AppColors.categoryColors[category.id] ?? Colors.grey).withOpacity(0.8),
+                          width: 1.2,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        category.name,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: isSelected 
+                              ? Colors.white 
+                              : AppColors.categoryColors[category.id]?.withOpacity(0.85),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
                         ),
                       ),
                     ),
                   ),
                 ),
               );
-            },
+            }).toList(),
           ),
         ),
       ],
