@@ -24,7 +24,6 @@ class AppRoutes {
       search: (context) => const SearchScreen(),
       productDetail: (context) => const ProductDetailScreen(),
       cart: (context) => const CartScreen(),
-      payment: (context) => const PaymentScreen(),
       orderStatus: (context) => const OrderStatusScreen(),
     };
   }
@@ -37,6 +36,14 @@ class AppRoutes {
         final item = settings.arguments as PopularItem;
         return MaterialPageRoute(
           builder: (_) => MenuDetailScreen(item: item),
+        );
+      case payment:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => PaymentScreen(
+            item: args['item'] as PopularItem,
+            quantity: args['quantity'] as int,
+          ),
         );
       default:
         return MaterialPageRoute(

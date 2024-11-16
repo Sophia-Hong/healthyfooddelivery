@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../features/shared/constants/app_colors.dart';
 import '../../home/models/popular_item.dart';
 import '../../../features/shared/utils/format_utils.dart';
+import '../../payment/screens/payment_screen.dart';
 
 class MenuDetailScreen extends StatefulWidget {
   final PopularItem item;
@@ -105,8 +106,15 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: 결제 페이지로 동
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();  // 다이얼로그 닫기
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => PaymentScreen(
+                                item: widget.item,
+                                quantity: quantity,
+                              ),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
