@@ -21,8 +21,29 @@ class _PaymentScreenState extends State<PaymentScreen> {
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
   final _phoneController = TextEditingController();
+  String _selectedPaymentMethod = 'card';  // 기본값은 신용카드
 
   static const primaryGreen = Color(0xFF1B5E20);
+
+  // 결제 수단 목록
+  final List<Map<String, dynamic>> _paymentMethods = [
+    {
+      'id': 'naverpay',
+      'name': '네이버페이',
+    },
+    {
+      'id': 'kakaopay',
+      'name': '카카오페이',
+    },
+    {
+      'id': 'applepay',
+      'name': '애플페이',
+    },
+    {
+      'id': 'card',
+      'name': '신용카드',
+    },
+  ];
 
   @override
   void dispose() {
@@ -153,6 +174,46 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
               ),
               const SizedBox(height: 8),
+              // 결제 수단 선택
+              Container(
+                padding: const EdgeInsets.all(16),
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '결제 수단',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ..._paymentMethods.map((method) => RadioListTile(
+                      value: method['id'],
+                      groupValue: _selectedPaymentMethod,
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedPaymentMethod = value.toString();
+                        });
+                      },
+                      title: Text(
+                        method['name'],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      activeColor: primaryGreen,
+                    )).toList(),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
               // 결제 금액 정보
               Container(
                 padding: const EdgeInsets.all(16),
@@ -186,10 +247,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
           child: ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                // 입력값이 유효한 경우에만 결제 처리
+                // 결제 수단에 따른 처리 로직 추가
+                String paymentMethodName = _paymentMethods
+                    .firstWhere((method) => method['id'] == _selectedPaymentMethod)['name'];
+                    
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('결제가 완료되었습니다'),
+                  SnackBar(
+                    content: Text('$paymentMethodName(으)로 결제가 완료되었습니다'),
                   ),
                 );
                 Navigator.popUntil(context, ModalRoute.withName('/'));
