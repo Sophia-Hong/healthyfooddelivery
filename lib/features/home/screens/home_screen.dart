@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final discountEvent = DiscountEvent(
-      title: '비건 피자 출시!',
+      title: '비건 피자 할인!',
       description: '건강하지만 비싸지 않아요',
       imageUrl: 'https://images.unsplash.com/photo-1585238342024-78d387f4a707?auto=format&fit=crop&w=800&q=80',
       originalPrice: 15900,

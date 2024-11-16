@@ -26,7 +26,7 @@ class Category {
     ),
     Category(
       id: 'vegan',
-      name: '초록비건',
+      name: '채식',
     ),
   ];
 } 
