@@ -165,155 +165,227 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '총 금액',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  Text(
-                    '${widget.item.price * _quantity}원',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // 주문 관련 버튼
+          Container(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  color: Colors.grey[200]!,
+                  width: 1,
+                ),
               ),
-              const SizedBox(width: 24),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // 장바구니 담기 성공 팝업
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          contentPadding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // 메뉴명
-                              Text(
-                                widget.item.title,
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF1B5E20),
-                                ),
+            ),
+            child: SafeArea(
+              child: Row(
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '총 금액',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 13,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${widget.item.price * _quantity}원',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 24),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // 장바구니 담기 성공 팝업
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
                               ),
-                              const SizedBox(height: 20),
-                              // 수량
-                              Row(
+                              contentPadding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // 메뉴명
                                   Text(
-                                    '수량',
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    '$_quantity개',
+                                    widget.item.title,
                                     style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              // 총 금액
-                              Row(
-                                children: [
-                                  Text(
-                                    '총 금액',
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    '${widget.item.price * _quantity}원',
-                                    style: const TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 24,
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xFF1B5E20),
                                     ),
                                   ),
+                                  const SizedBox(height: 20),
+                                  // 수량
+                                  Row(
+                                    children: [
+                                      Text(
+                                        '수량',
+                                        style: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Text(
+                                        '$_quantity개',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 12),
+                                  // 총 금액
+                                  Row(
+                                    children: [
+                                      Text(
+                                        '총 금액',
+                                        style: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Text(
+                                        '${widget.item.price * _quantity}원',
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF1B5E20),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 24),
+                                  const Divider(height: 1),
+                                  const SizedBox(height: 24),
+                                  // 장바구니 담김 메시지
+                                  const Center(
+                                    child: Text(
+                                      '장바구니에 담겼습니다',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
-                              const SizedBox(height: 24),
-                              const Divider(height: 1),
-                              const SizedBox(height: 24),
-                              // 장바구니 담김 메시지
-                              const Center(
-                                child: Text(
-                                  '장바구니에 담겼습니다',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
+                              actions: [
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    style: TextButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(vertical: 12),
+                                    ),
+                                    child: const Text(
+                                      '확인',
+                                      style: TextStyle(
+                                        color: Color(0xFF1B5E20),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          actions: [
-                            SizedBox(
-                              width: double.infinity,
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
-                                ),
-                                child: const Text(
-                                  '확인',
-                                  style: TextStyle(
-                                    color: Color(0xFF1B5E20),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                              ],
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryGreen,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 16,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryGreen,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 16,
+                        ),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        '주문하기',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
-                  child: const Text(
-                    '주문하기',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          const SizedBox(height: 8),  // 네비게이션 바와의 간격
+          // 하단 네비게이션 바
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.04),
+                  blurRadius: 8,
+                  offset: const Offset(0, -2),
+                ),
+              ],
+            ),
+            child: SafeArea(
+              child: NavigationBar(
+                height: 56,  // 높이 약간 줄임
+                backgroundColor: Colors.transparent,
+                indicatorColor: primaryGreen.withOpacity(0.1),
+                selectedIndex: 0,
+                labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+                destinations: const [
+                  NavigationDestination(
+                    icon: Icon(Icons.home_outlined),
+                    selectedIcon: Icon(Icons.home),
+                    label: '홈',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.restaurant_menu_outlined),
+                    selectedIcon: Icon(Icons.restaurant_menu),
+                    label: '메뉴',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.shopping_cart_outlined),
+                    selectedIcon: Icon(Icons.shopping_cart),
+                    label: '장바구니',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.person_outline),
+                    selectedIcon: Icon(Icons.person),
+                    label: 'MY',
+                  ),
+                ],
+                onDestinationSelected: (index) {
+                  // TODO: 탭 전환 구현
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
