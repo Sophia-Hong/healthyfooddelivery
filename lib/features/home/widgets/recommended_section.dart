@@ -15,12 +15,14 @@ class RecommendedSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          const Padding(
+            padding: EdgeInsets.all(16),
             child: Text(
-              '추천 메뉴',
-              style: Theme.of(context).textTheme.headlineSmall,
-              semanticsLabel: '추천 메뉴 섹션',
+              '맛있어요. 드셔보아요',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(height: 16),

@@ -13,6 +13,8 @@ class CategorySection extends StatefulWidget {
 class _CategorySectionState extends State<CategorySection> {
   String? _selectedId;
 
+  static const primaryGreen = Color(0xFF1B5E20);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -33,14 +35,13 @@ class _CategorySectionState extends State<CategorySection> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 24, 16, 12),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 24, 16, 12),
               child: Text(
                 '이런 메뉴 어때요',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
-                  height: 1.2,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -54,7 +55,7 @@ class _CategorySectionState extends State<CategorySection> {
                   final isSelected = _selectedId == category.id;
                   return Material(
                     color: isSelected 
-                        ? AppColors.primaryOrange 
+                        ? primaryGreen 
                         : Colors.white,
                     borderRadius: BorderRadius.circular(20),
                     elevation: 1,
@@ -82,7 +83,7 @@ class _CategorySectionState extends State<CategorySection> {
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: isSelected 
-                                ? AppColors.primaryOrange 
+                                ? primaryGreen 
                                 : AppColors.textPrimary.withOpacity(0.2),
                             width: 1.2,
                           ),

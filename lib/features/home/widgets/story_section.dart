@@ -47,12 +47,14 @@ class StorySection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          const Padding(
+            padding: EdgeInsets.all(16),
             child: Text(
-              '숨쉬고, 먹고, 살다.',
-              style: Theme.of(context).textTheme.headlineSmall,
-              semanticsLabel: '음식 스토리 섹션',
+              '우리가 먹고, 사는 이야기.',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(height: 16),

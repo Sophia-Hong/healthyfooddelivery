@@ -17,11 +17,13 @@ class PopularSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.all(16),
             child: Text(
-              '사랑받은 메뉴',
-              style: Theme.of(context).textTheme.headlineSmall,
-              semanticsLabel: '인기 메뉴 섹션',
+              '이번 주 가장 사랑받은 메뉴',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(height: 16),
