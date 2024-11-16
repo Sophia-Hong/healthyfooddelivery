@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../features/shared/constants/app_colors.dart';
-import '../../../features/shared/utils/format_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../home/models/popular_item.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -18,7 +17,20 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  String _selectedPaymentMethod = 'card';  // 기본값: 카드결제
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _phoneController = TextEditingController();
+
+  static const primaryGreen = Color(0xFF1B5E20);
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _addressController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,247 +41,201 @@ class _PaymentScreenState extends State<PaymentScreen> {
         foregroundColor: Colors.black,
         elevation: 0,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 주문 정보 요약
-                  _buildOrderSummary(),
-                  const Divider(height: 1),
-                  
-                  // 배송지 정보
-                  _buildDeliveryInfo(),
-                  const Divider(height: 1),
-                  
-                  // 결제 수단 선택
-                  _buildPaymentMethods(),
-                ],
-              ),
-            ),
-          ),
-          
-          // 하단 결제 버튼
-          _buildPaymentButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOrderSummary() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '주문 정보',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 음식 이미지
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  widget.item.imageUrl,
-                  width: 60,
-                  height: 60,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 16),
-              // 메뉴 정보
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              // 주문 상품 정보
+              Container(
+                padding: const EdgeInsets.all(16),
+                color: Colors.white,
+                child: Row(
                   children: [
-                    Text(
-                      widget.item.title,
-                      style: Theme.of(context).textTheme.titleMedium,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: CachedNetworkImage(
+                        imageUrl: widget.item.imageUrl,
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${formatPrice(widget.item.price)}원 · ${widget.quantity}개',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.item.title,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '${widget.item.price}원 · ${widget.quantity}개',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDeliveryInfo() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '배송지',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+              const SizedBox(height: 8),
+              // 배송 정보 입력
+              Container(
+                padding: const EdgeInsets.all(16),
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '배송 정보',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        labelText: '이름',
+                        hintText: '받으실 분의 이름을 입력해주세요',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '이름을 입력해주세요';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _addressController,
+                      decoration: const InputDecoration(
+                        labelText: '배송지',
+                        hintText: '주소를 입력해주세요',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '배송지를 입력해주세요';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _phoneController,
+                      decoration: const InputDecoration(
+                        labelText: '연락처',
+                        hintText: '연락처를 입력해주세요',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '연락처를 입력해주세요';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  // TODO: 배송지 변경
-                },
-                child: const Text('변경'),
+              const SizedBox(height: 8),
+              // 결제 금액 정보
+              Container(
+                padding: const EdgeInsets.all(16),
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '결제 금액',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildPriceRow('주문 금액', widget.item.price * widget.quantity),
+                    const SizedBox(height: 12),
+                    _buildPriceRow('배송비', 3000),
+                    const Divider(height: 24),
+                    _buildPriceRow('총 결제 금액', (widget.item.price * widget.quantity) + 3000, isTotal: true),
+                  ],
+                ),
               ),
             ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '서울시 강남구 테헤란로 123',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '캠프 제니스 빌딩 15층',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPaymentMethods() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '결제 수단',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 16),
-          // 결제 수단 라디오 버튼
-          _buildPaymentMethodRadio(
-            value: 'card',
-            title: '카드결제',
-            subtitle: '신용/체크카드',
-          ),
-          _buildPaymentMethodRadio(
-            value: 'naverpay',
-            title: '네이버페이',
-            subtitle: '네이버페이로 결제',
-          ),
-          _buildPaymentMethodRadio(
-            value: 'kakaopay',
-            title: '카카오페이',
-            subtitle: '카카오페이로 결제',
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPaymentMethodRadio({
-    required String value,
-    required String title,
-    required String subtitle,
-  }) {
-    return RadioListTile(
-      value: value,
-      groupValue: _selectedPaymentMethod,
-      onChanged: (String? newValue) {
-        if (newValue != null) {
-          setState(() {
-            _selectedPaymentMethod = newValue;
-          });
-        }
-      },
-      title: Text(title),
-      subtitle: Text(
-        subtitle,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: AppColors.textSecondary,
-        ),
-      ),
-      contentPadding: EdgeInsets.zero,
-    );
-  }
-
-  Widget _buildPaymentButton() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(
-            color: Colors.grey.shade200,
-            width: 1,
           ),
         ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // 최종 결제 금액
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '최종 결제 금액',
-                style: Theme.of(context).textTheme.titleMedium,
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                // 입력값이 유효한 경우에만 결제 처리
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('결제가 완료되었습니다'),
+                  ),
+                );
+                Navigator.popUntil(context, ModalRoute.withName('/'));
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primaryGreen,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
-              Text(
-                '${formatPrice(widget.item.price * widget.quantity)}원',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF4CAF50),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          // 결제하기 버튼
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                // TODO: 결제 처리
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: const Color(0xFF4CAF50),
-                foregroundColor: Colors.white,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                '결제하기',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+            ),
+            child: const Text(
+              '결제하기',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
           ),
-        ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildPriceRow(String label, int price, {bool isTotal = false}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: isTotal ? 16 : 15,
+            fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
+            color: isTotal ? Colors.black : Colors.grey[600],
+          ),
+        ),
+        Text(
+          '${price}원',
+          style: TextStyle(
+            fontSize: isTotal ? 18 : 15,
+            fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ],
     );
   }
 } 

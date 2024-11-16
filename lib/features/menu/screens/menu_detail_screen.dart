@@ -294,6 +294,14 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
                                   child: TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/payment',
+                                        arguments: {
+                                          'item': widget.item,
+                                          'quantity': _quantity,
+                                        },
+                                      );
                                     },
                                     style: TextButton.styleFrom(
                                       padding: const EdgeInsets.symmetric(vertical: 12),
