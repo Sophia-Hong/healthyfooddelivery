@@ -87,15 +87,14 @@ class _StoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Story를 PopularItem으로 변환하여 메뉴 상세 페이지로 전달
         final popularItem = PopularItem(
           id: story.id,
           title: story.title,
-          subtitle: story.subtitle,  // 실제 subtitle 사용
+          subtitle: story.subtitle,
           imageUrl: story.imageUrl,
           price: story.price,
-          rating: 4.5,  // 기본값 설정
-          deliveryTime: '20-30',  // String 형식으로 배달시간 설정
+          rating: 4.5,
+          deliveryTime: '20-30',
         );
         
         Navigator.pushNamed(

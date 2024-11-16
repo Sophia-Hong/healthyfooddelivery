@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../features/shared/constants/app_colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../home/models/popular_item.dart';
-import '../../../features/shared/utils/format_utils.dart';
-import '../../payment/screens/payment_screen.dart';
 
 class MenuDetailScreen extends StatefulWidget {
   final PopularItem item;
@@ -17,374 +15,208 @@ class MenuDetailScreen extends StatefulWidget {
 }
 
 class _MenuDetailScreenState extends State<MenuDetailScreen> {
-  int quantity = 1;
-
-  void _showCartDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // 성공 메시지
-                const Text(
-                  '장바구니에 담았어요',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                
-                // 메뉴 정보
-                Text(
-                  widget.item.title,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                
-                // 수량
-                Text(
-                  '$quantity개',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                
-                // 총 금액
-                Text(
-                  '총 ${formatPrice(widget.item.price * quantity)}원',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF4CAF50),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                
-                // 버튼들
-                Row(
-                  children: [
-                    // 메뉴 더 담기 버튼
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          side: const BorderSide(color: Color(0xFF4CAF50)),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text(
-                          '메뉴 더 담기',
-                          style: TextStyle(
-                            color: Color(0xFF4CAF50),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    
-                    // 결제하기 버튼
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();  // 다이얼로그 닫기
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => PaymentScreen(
-                                item: widget.item,
-                                quantity: quantity,
-                              ),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor: const Color(0xFF4CAF50),
-                          foregroundColor: Colors.white,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text(
-                          '결제하기',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  int _quantity = 1;
+  static const primaryGreen = Color(0xFF1B5E20);
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            // 뒤로가기 버튼
-            Padding(
-              padding: const EdgeInsets.only(left: 16, top: 8),
-              child: Align(
-                alignment: Alignment.centerLeft,
+      body: CustomScrollView(
+        slivers: [
+          // 앱바와 이미지
+          SliverAppBar(
+            expandedHeight: 250,
+            pinned: false,
+            floating: true,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
                 child: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_back_ios),
-                  color: Colors.black,
-                  padding: EdgeInsets.zero,
                 ),
               ),
             ),
-            
-            // 음식 이미지 (높이 줄임)
-            Container(
-              width: screenWidth,
-              height: screenWidth * 0.6,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(widget.item.imageUrl),
-                  fit: BoxFit.cover,
-                ),
-              ),
+            flexibleSpace: CachedNetworkImage(
+              imageUrl: widget.item.imageUrl,
+              fit: BoxFit.cover,
+              width: double.infinity,
             ),
-            
-            // 상세 정보 섹션
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          // 메뉴 정보
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 메뉴명
+                  Text(
+                    widget.item.title,
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  // 쉐프 정보
+                  Row(
                     children: [
-                      // 메뉴 이름
-                      Text(
-                        widget.item.title,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      const SizedBox(height: 8),
-                      
-                      // 부제목
-                      Text(
-                        widget.item.subtitle,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
+                      const CircleAvatar(
+                        radius: 24,
+                        backgroundImage: NetworkImage(
+                          'https://images.unsplash.com/photo-1583394293214-28ded15ee548?auto=format&fit=crop&w=200&q=80',
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      
-                      // 만든 사람
-                      Row(
+                      const SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CircleAvatar(
-                            radius: 16,
-                            backgroundImage: NetworkImage(
-                              'https://randomuser.me/api/portraits/men/32.jpg',
-                            ),
-                          ),
-                          const SizedBox(width: 8),
                           Text(
-                            '셰프 김민수',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            '쉐프 김민수',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Healthigo 수석 쉐프',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Colors.grey[600],
+                            ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
-                      
-                      // 음식 정보 (건강식 강조)
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF1F8E9),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.eco_outlined,
-                                  color: Color(0xFF4CAF50),
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  '건강한 한 끼',
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(0xFF4CAF50),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 12),
-                            const Text(
-                              '• 신선한 제철 채소와 단백질이 조화로운 건강식\n'
-                              '• 저칼로리 고단백 식단 (칼로리 380kcal, 단백질 25g)\n'
-                              '• 자연 재료로만 만든 드레싱\n'
-                              '• 무항생제 닭가슴살 사용',
-                              style: TextStyle(
-                                height: 1.6,
-                                color: Colors.black87,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      
-                      // 가격과 수량 선택 Row
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // 개당 가격
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '개당 가격',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: AppColors.textSecondary,
-                                ),
-                              ),
-                              Text(
-                                '${formatPrice(widget.item.price)}원',
-                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          // 수량 선택
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  if (quantity > 1) {
-                                    setState(() => quantity--);
-                                  }
-                                },
-                                icon: const Icon(Icons.remove_circle_outline),
-                                color: const Color(0xFF4CAF50),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: Text(
-                                  quantity.toString(),
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  setState(() => quantity++);
-                                },
-                                icon: const Icon(Icons.add_circle_outline),
-                                color: const Color(0xFF4CAF50),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
                     ],
                   ),
-                ),
-              ),
-            ),
-            
-            // 하단 총 금액과 장바구니 담기 버튼
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: Colors.grey.shade200,
-                    width: 1,
-                  ),
-                ),
-              ),
-              child: Row(
-                children: [
-                  // 총 금액
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '총 금액',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
+                  const SizedBox(height: 24),
+                  // 메뉴 이야기
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          primaryGreen.withOpacity(0.05),
+                          primaryGreen.withOpacity(0.1),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${widget.item.title}의 이야기',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '신선한 채소와 단백질이 조화롭게 어우러진 건강한 한 끼입니다. '
+                          '엄선된 재료들로 영양 균형을 맞추었으며, 칼로리는 낮지만 포만감은 높아요. '
+                          '바쁜 일상 속에서도 건강을 챙기고 싶은 분들을 위해 특별히 준비했습니다.',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            height: 1.6,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  // 수량 선택과 가격
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          if (_quantity > 1) {
+                            setState(() => _quantity--);
+                          }
+                        },
+                        icon: const Icon(Icons.remove_circle_outline),
                       ),
                       Text(
-                        '${formatPrice(widget.item.price * quantity)}원',
+                        _quantity.toString(),
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          setState(() => _quantity++);
+                        },
+                        icon: const Icon(Icons.add_circle_outline),
+                      ),
+                      const Spacer(),
+                      Text(
+                        '${widget.item.price}원',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
                         ),
                       ),
                     ],
-                  ),
-                  const SizedBox(width: 20),
-                  // 장바구니 담기 버튼
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _showCartDialog,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: const Color(0xFF4CAF50),
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Text(
-                        '장바구니 담기',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
                   ),
                 ],
               ),
             ),
-          ],
+          ),
+        ],
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '총 금액',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  Text(
+                    '${widget.item.price * _quantity}원',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(width: 24),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/payment',
+                      arguments: {
+                        'item': widget.item,
+                        'quantity': _quantity,
+                      },
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryGreen,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                    ),
+                  ),
+                  child: const Text(
+                    '주문하기',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
