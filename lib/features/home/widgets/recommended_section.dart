@@ -8,38 +8,61 @@ import 'package:cached_network_image/cached_network_image.dart';
 class RecommendedSection extends StatelessWidget {
   const RecommendedSection({super.key});
 
+  static const primaryGreen = Color(0xFF1B5E20);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 24.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(16),
-            child: Text(
-              '맛있어요. 드셔보아요',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.white,
+              primaryGreen.withOpacity(0.01),  // 더 연한 그라데이션
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: primaryGreen.withOpacity(0.03),  // 더 연한 그림자
+              blurRadius: 16,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                '맛있어요. 드셔보아요',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            itemCount: RecommendedItem.recommendedItems.length,
-            itemBuilder: (context, index) {
-              final item = RecommendedItem.recommendedItems[index];
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: _RecommendedItemCard(item: item),
-              );
-            },
-          ),
-        ],
+            const SizedBox(height: 16),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              itemCount: RecommendedItem.recommendedItems.length,
+              itemBuilder: (context, index) {
+                final item = RecommendedItem.recommendedItems[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: _RecommendedItemCard(item: item),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
