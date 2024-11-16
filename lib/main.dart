@@ -15,8 +15,7 @@ class HealthigoApp extends StatelessWidget {
       title: 'Healthigo',
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      onGenerateRoute: AppRoutes.generateRoute,
-      routes: AppRoutes.getRoutes(),
+      routes: routes,
     );
   }
 }
