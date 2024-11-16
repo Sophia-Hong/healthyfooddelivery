@@ -43,12 +43,12 @@ class StorySection extends StatelessWidget {
       );
     }
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 12),
             child: Text(
               '우리가 먹고, 사는 이야기.',
               style: TextStyle(
@@ -57,9 +57,9 @@ class StorySection extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           SizedBox(
-            height: 320,
+            height: 280,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -105,8 +105,8 @@ class _StoryCard extends StatelessWidget {
         );
       },
       child: Container(
-        width: 280,
-        margin: const EdgeInsets.only(right: 16),
+        width: 260,
+        margin: const EdgeInsets.only(right: 12),
         child: Card(
           clipBehavior: Clip.antiAlias,
           child: Column(

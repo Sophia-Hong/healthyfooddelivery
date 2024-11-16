@@ -38,7 +38,7 @@ class _CategorySectionState extends State<CategorySection> {
             const Padding(
               padding: EdgeInsets.fromLTRB(16, 24, 16, 12),
               child: Text(
-                '이런 메뉴 어때요',
+                '이럴 땐 요걸 골라요',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
