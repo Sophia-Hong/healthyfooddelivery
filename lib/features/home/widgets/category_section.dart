@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/category.dart';
 import '../../../features/shared/constants/app_colors.dart';
+import '../pages/meat_alternative_page.dart';
 
 class CategorySection extends StatefulWidget {
   const CategorySection({super.key});
@@ -38,7 +39,7 @@ class _CategorySectionState extends State<CategorySection> {
                 ),
                 child: Material(
                   color: isSelected 
-                      ? AppColors.categoryColors[category.id] 
+                      ? AppColors.primaryBlue 
                       : Colors.white,
                   borderRadius: BorderRadius.circular(20),
                   elevation: 1,
@@ -47,6 +48,16 @@ class _CategorySectionState extends State<CategorySection> {
                       setState(() {
                         _selectedId = isSelected ? null : category.id;
                       });
+                      
+                      // 고기안부럽 샐러드 클릭 시 페이지 이동
+                      if (category.id == 'salad') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MeatAlternativePage(),
+                          ),
+                        );
+                      }
                     },
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
@@ -56,7 +67,9 @@ class _CategorySectionState extends State<CategorySection> {
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: (AppColors.categoryColors[category.id] ?? Colors.grey).withOpacity(0.8),
+                          color: isSelected 
+                              ? AppColors.primaryBlue 
+                              : AppColors.textPrimary.withOpacity(0.2),
                           width: 1.2,
                         ),
                         borderRadius: BorderRadius.circular(20),
@@ -66,7 +79,7 @@ class _CategorySectionState extends State<CategorySection> {
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: isSelected 
                               ? Colors.white 
-                              : AppColors.categoryColors[category.id]?.withOpacity(0.85),
+                              : AppColors.textPrimary,
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
                         ),
