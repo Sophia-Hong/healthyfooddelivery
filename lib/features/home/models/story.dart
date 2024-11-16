@@ -19,7 +19,7 @@ class Story {
     Story(
       id: '1',
       title: '내 몸이 된 음식',
-      subtitle: '각 식재료가 생겨나 한 그릇 안에 섞이기까지의 이야기',
+      subtitle: '각 식재료가 생겨나 한 그릇 안에 섞이기까지',
       imageUrl: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&w=600&q=80',
       category: '식재료 이야기',
       price: 10000,
