@@ -5,6 +5,7 @@ import '../features/product/screens/product_detail_screen.dart';
 import '../features/cart/screens/cart_screen.dart';
 import '../features/payment/screens/payment_screen.dart';
 import '../features/order/screens/order_status_screen.dart';
+import '../core/screens/main_screen.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -23,5 +24,19 @@ class AppRoutes {
       payment: (context) => const PaymentScreen(),
       orderStatus: (context) => const OrderStatusScreen(),
     };
+  }
+
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case '/':
+        return MaterialPageRoute(builder: (_) => const MainScreen());
+      // 기존 라우트들...
+      default:
+        return MaterialPageRoute(
+          builder: (_) => const Scaffold(
+            body: Center(child: Text('Route not found')),
+          ),
+        );
+    }
   }
 } 
