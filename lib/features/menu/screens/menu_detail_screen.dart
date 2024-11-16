@@ -190,12 +190,108 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/payment',
-                      arguments: {
-                        'item': widget.item,
-                        'quantity': _quantity,
+                    // 장바구니 담기 성공 팝업
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          contentPadding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // 메뉴명
+                              Text(
+                                widget.item.title,
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF1B5E20),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              // 수량
+                              Row(
+                                children: [
+                                  Text(
+                                    '수량',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Text(
+                                    '$_quantity개',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              // 총 금액
+                              Row(
+                                children: [
+                                  Text(
+                                    '총 금액',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Text(
+                                    '${widget.item.price * _quantity}원',
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF1B5E20),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 24),
+                              const Divider(height: 1),
+                              const SizedBox(height: 24),
+                              // 장바구니 담김 메시지
+                              const Center(
+                                child: Text(
+                                  '장바구니에 담겼습니다',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          actions: [
+                            SizedBox(
+                              width: double.infinity,
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                ),
+                                child: const Text(
+                                  '확인',
+                                  style: TextStyle(
+                                    color: Color(0xFF1B5E20),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
                       },
                     );
                   },
